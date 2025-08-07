@@ -18,13 +18,16 @@ You need to be authenticated to access or modify any task. Each task is linked t
 ## 📋 Endpoints
 
 1. Get All Tasks
-2. 
-GET /api/tasks
-
+  
+2. GET /api/tasks
+   
 Returns all tasks of the authenticated user.
 
 Response:
 
+json
+Copier
+Modifier
 [
   {
     "id": 1,
@@ -37,15 +40,15 @@ Response:
     "updatedAt": "2025-08-05T12:00:00"
   }
 ]
-
 2. Get Task by ID
-   
-3. GET /api/tasks/{id}
-
+GET /api/tasks/{id}
 Returns a specific task if it belongs to the user.
 
 Response:
 
+json
+Copier
+Modifier
 {
   "id": 1,
   "title": "Buy groceries",
