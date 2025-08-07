@@ -3,6 +3,8 @@ package com.chouket370.gestiontaches.repository;
 
 import com.chouket370.gestiontaches.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -19,6 +21,12 @@ public interface TaskRepository extends JpaRepository<Task,Long> {
     List<Task> findByUserUsernameAndDueDateBetween(String username, LocalDateTime start, LocalDateTime end);
     List<Task> findByUserUsernameAndArchivedTrue(String username);
     List<Task> findByUserUsernameAndCompletedFalseAndArchivedFalseAndDueDateBetween(String username, LocalDateTime start, LocalDateTime end);
+    @Query("SELECT t FROM Task t WHERE " +
+            "t.user.username = :username OR " +
+            "t.assignedTo.username = :username OR " +
+            "(t.completed = false AND t.assignedTo IS NULL)")
+    List<Task> findRelevantTasksForUser(@Param("username") String username);
+
 
 
 
