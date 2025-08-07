@@ -4,6 +4,7 @@ package com.chouket370.gestiontaches.service;
 
 import com.chouket370.gestiontaches.model.User;
 import com.chouket370.gestiontaches.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,4 +24,9 @@ public class CurrentUserService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
     }
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + username));
+    }
+
 }
