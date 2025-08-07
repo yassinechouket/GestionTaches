@@ -35,6 +35,13 @@ public class Task {
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assigned_to_id")
+    private User assignedTo;
+
 
 
     @ManyToOne(fetch = FetchType.LAZY)
