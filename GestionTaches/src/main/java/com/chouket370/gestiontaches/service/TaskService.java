@@ -7,8 +7,10 @@ import com.chouket370.gestiontaches.model.Task;
 import com.chouket370.gestiontaches.model.User;
 import com.chouket370.gestiontaches.repository.TaskRepository;
 
+import com.chouket370.gestiontaches.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,14 +23,16 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final CurrentUserService currentUserService;
+    private final UserRepository userRepository;
 
     public List<TaskResponseDTO> getUserTasks() {
         String username = currentUserService.getCurrentUsername();
-        List<Task> tasks = taskRepository.findByUserUsername(username);
+        List<Task> tasks = taskRepository.findRelevantTasksForUser(username);
         return tasks.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
+
 
 
     public TaskResponseDTO getTaskById(Long taskId) {
@@ -83,7 +87,7 @@ public class TaskService {
 
 
 
-     public TaskResponseDTO updateTask(Long taskId, updatedTaskDTO updatedTaskDto) {
+    public TaskResponseDTO updateTask(Long taskId, updatedTaskDTO updatedTaskDto) {
         String username = currentUserService.getCurrentUsername();
         Task task = taskRepository.findByIdAndUserUsername(taskId, username)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found or access denied"));
@@ -97,6 +101,12 @@ public class TaskService {
         updatedTaskDto.getDueDate().ifPresent(task::setDueDate);
         updatedTaskDto.getCompleted().ifPresent(task::setCompleted);
 
+        updatedTaskDto.getAssignedToUsername().ifPresent(assignedUsername -> {
+            User assignedUser = userRepository.findByUsername(assignedUsername)
+                    .orElseThrow(() -> new UsernameNotFoundException("Assigned user not found: " + assignedUsername));
+            task.setAssignedTo(assignedUser);
+        });
+
         if (task.isCompleted() && task.getDueDate() != null && task.getDueDate().isBefore(LocalDateTime.now())) {
             task.setArchived(true);
         }
@@ -108,18 +118,23 @@ public class TaskService {
     public TaskResponseDTO createTask(TaskRequestDTO taskDto) {
         User user = currentUserService.getCurrentUser();
 
-        Task task = Task.builder()
+        Task.TaskBuilder taskBuilder = Task.builder()
                 .title(taskDto.getTitle())
                 .description(taskDto.getDescription())
                 .completed(taskDto.isCompleted())
                 .dueDate(taskDto.getDueDate())
                 .archived(taskDto.isArchived())
-                .user(user)
-                .build();
+                .user(user);
 
-        Task savedTask = taskRepository.save(task);
+        if (taskDto.getAssignedToUsername() != null) {
+            User assignedUser = currentUserService.getUserByUsername(taskDto.getAssignedToUsername());
+            taskBuilder.assignedTo(assignedUser);
+        }
+
+        Task savedTask = taskRepository.save(taskBuilder.build());
         return mapToResponseDTO(savedTask);
     }
+
 
     public void archiveCompletedOverdueTasks() {
         List<Task> tasks = taskRepository.findAll();
@@ -182,8 +197,10 @@ public class TaskService {
                 .archived(task.isArchived())
                 .createdAt(task.getCreatedAt())
                 .updatedAt(task.getUpdatedAt())
+                .assignedToUsername(task.getAssignedTo() != null ? task.getAssignedTo().getUsername() : null)
                 .build();
     }
+
     public List<TaskResponseDTO> getTasksDueSoon() {
         String username = currentUserService.getCurrentUsername();
         LocalDateTime now = LocalDateTime.now();
@@ -198,4 +215,3 @@ public class TaskService {
     }
 
 }
-
