@@ -7,15 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class updatedTaskDTO {
-    private String title;
-    private String description;
-    private LocalDateTime dueDate;
-    private boolean completed;
-
+    private Optional<String> title = Optional.empty();
+    private Optional<String> description = Optional.empty();
+    private Optional<LocalDateTime> dueDate = Optional.empty();
+    private Optional<Boolean> completed = Optional.empty();
 }
+
