@@ -17,45 +17,60 @@ You need to be authenticated to access or modify any task. Each task is linked t
 
 ## 📋 Endpoints
 
-1. Get All Tasks
+### 1. Get All Tasks
   
-2. GET /api/tasks
+ GET /api/tasks
    
 Returns all tasks of the authenticated user.
 
 Response:
 
-json
-Copier
-Modifier
+
 [
+
   {
     "id": 1,
+    
     "title": "Buy groceries",
+    
     "description": "Milk, Bread, Eggs",
+    
     "dueDate": "2025-08-08T17:00:00",
+    
     "completed": false,
+    
     "archived": false,
+    
     "createdAt": "2025-08-05T12:00:00",
+    
     "updatedAt": "2025-08-05T12:00:00"
+    
   }
+  
 ]
-2. Get Task by ID
+### 2. Get Task by ID
+
 GET /api/tasks/{id}
+
 Returns a specific task if it belongs to the user.
 
 Response:
 
-json
-Copier
-Modifier
 {
   "id": 1,
+  
   "title": "Buy groceries",
+  
   "description": "Milk, Bread, Eggs",
+  
   "dueDate": "2025-08-08T17:00:00",
+  
   "completed": false,
+  
   "archived": false,
+  
   "createdAt": "2025-08-05T12:00:00",
+  
   "updatedAt": "2025-08-05T12:00:00"
+  
 }
