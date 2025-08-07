@@ -20,4 +20,6 @@ public class TaskRequestDTO {
     private boolean completed;
     private boolean archived;
     private String assignedToUsername;
+    private Priority priority;
 }
+
