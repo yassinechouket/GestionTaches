@@ -20,4 +20,6 @@ public class TaskResponseDTO {
     private boolean archived;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String assignedToUsername;
+
 }
