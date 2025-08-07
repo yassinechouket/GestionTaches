@@ -27,7 +27,6 @@ Response:
 
 
 [
-
   {
     "id": 1,
     
@@ -46,7 +45,6 @@ Response:
     "updatedAt": "2025-08-05T12:00:00"
     
   }
-  
 ]
 ### 2. Get Task by ID
 
