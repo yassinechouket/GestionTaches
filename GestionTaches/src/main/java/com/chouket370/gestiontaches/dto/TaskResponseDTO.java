@@ -21,5 +21,7 @@ public class TaskResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String assignedToUsername;
+    private Priority priority;
 
 }
+
