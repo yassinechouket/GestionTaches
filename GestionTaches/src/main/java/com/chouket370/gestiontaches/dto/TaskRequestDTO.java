@@ -19,4 +19,5 @@ public class TaskRequestDTO {
     private LocalDateTime dueDate;
     private boolean completed;
     private boolean archived;
+    private String assignedToUsername;
 }
