@@ -3,6 +3,7 @@ package com.chouket370.gestiontaches.service;
 import com.chouket370.gestiontaches.dto.TaskResponseDTO;
 import com.chouket370.gestiontaches.dto.TaskRequestDTO;
 import com.chouket370.gestiontaches.dto.updatedTaskDTO;
+import com.chouket370.gestiontaches.model.Priority;
 import com.chouket370.gestiontaches.model.Task;
 import com.chouket370.gestiontaches.model.User;
 import com.chouket370.gestiontaches.repository.TaskRepository;
@@ -100,6 +101,8 @@ public class TaskService {
         updatedTaskDto.getDescription().ifPresent(task::setDescription);
         updatedTaskDto.getDueDate().ifPresent(task::setDueDate);
         updatedTaskDto.getCompleted().ifPresent(task::setCompleted);
+        updatedTaskDto.getPriority().ifPresent(task::setPriority);
+
 
         updatedTaskDto.getAssignedToUsername().ifPresent(assignedUsername -> {
             User assignedUser = userRepository.findByUsername(assignedUsername)
@@ -124,6 +127,7 @@ public class TaskService {
                 .completed(taskDto.isCompleted())
                 .dueDate(taskDto.getDueDate())
                 .archived(taskDto.isArchived())
+                .priority(taskDto.getPriority())
                 .user(user);
 
         if (taskDto.getAssignedToUsername() != null) {
@@ -198,6 +202,7 @@ public class TaskService {
                 .createdAt(task.getCreatedAt())
                 .updatedAt(task.getUpdatedAt())
                 .assignedToUsername(task.getAssignedTo() != null ? task.getAssignedTo().getUsername() : null)
+                .priority(task.getPriority())
                 .build();
     }
 
