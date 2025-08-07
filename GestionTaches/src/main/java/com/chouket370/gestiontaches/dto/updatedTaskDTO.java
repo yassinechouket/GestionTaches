@@ -18,5 +18,8 @@ public class updatedTaskDTO {
     private Optional<String> description = Optional.empty();
     private Optional<LocalDateTime> dueDate = Optional.empty();
     private Optional<Boolean> completed = Optional.empty();
+    private Optional<String> assignedToUsername = Optional.empty();
+    private Optional<Priority> priority= Optional.empty();
 }
+
 
