@@ -25,7 +25,6 @@ Returns all tasks of the authenticated user.
 
 Response:
 
-
 [
   {
     "id": 1,
@@ -46,6 +45,7 @@ Response:
     
   }
 ]
+
 ### 2. Get Task by ID
 
 GET /api/tasks/{id}
