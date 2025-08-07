@@ -46,6 +46,7 @@ Response:
   }
 ]
 
+
 ### 2. Get Task by ID
 
 GET /api/tasks/{id}
