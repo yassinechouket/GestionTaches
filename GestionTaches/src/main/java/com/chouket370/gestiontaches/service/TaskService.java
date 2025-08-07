@@ -83,7 +83,7 @@ public class TaskService {
 
 
 
-    public TaskResponseDTO updateTask(Long taskId, updatedTaskDTO updatedTask) {
+     public TaskResponseDTO updateTask(Long taskId, updatedTaskDTO updatedTaskDto) {
         String username = currentUserService.getCurrentUsername();
         Task task = taskRepository.findByIdAndUserUsername(taskId, username)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found or access denied"));
@@ -92,10 +92,10 @@ public class TaskService {
             throw new IllegalStateException("Archived tasks cannot be modified");
         }
 
-        task.setTitle(updatedTask.getTitle());
-        task.setDescription(updatedTask.getDescription());
-        task.setDueDate(updatedTask.getDueDate());
-        task.setCompleted(updatedTask.isCompleted());
+        updatedTaskDto.getTitle().ifPresent(task::setTitle);
+        updatedTaskDto.getDescription().ifPresent(task::setDescription);
+        updatedTaskDto.getDueDate().ifPresent(task::setDueDate);
+        updatedTaskDto.getCompleted().ifPresent(task::setCompleted);
 
         if (task.isCompleted() && task.getDueDate() != null && task.getDueDate().isBefore(LocalDateTime.now())) {
             task.setArchived(true);
@@ -198,3 +198,4 @@ public class TaskService {
     }
 
 }
+
