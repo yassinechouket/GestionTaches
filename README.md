@@ -1,186 +1,322 @@
 # Task Management API
 
-This API allows you to manage your personal tasks and to-do items.
+This API allows you to manage your personal tasks and to-do items. Think of it like a digital to-do list where you can create, update, complete, and organize your tasks.
 
 The API is available at `http://localhost:8080`
 
-## Endpoints
+## How It Works
 
-### Status
-GET `/status`
+This is a **personal task manager**. Each user has their own private task list - you can only see and manage your own tasks, not other people's tasks. You need to be logged in (authenticated) to use most features.
 
-Returns the status of the API.
+## What You Need to Know
 
-### List of tasks
-GET `/api/tasks`
+- **Authentication Required**: You need a valid token (like a digital key) to access your tasks
+- **JSON Format**: All data is sent and received in JSON format
+- **Your Tasks Only**: You can only see/modify tasks that belong to you
+- **Automatic Features**: Some tasks get archived automatically when completed and overdue
 
-Returns a list of all tasks for the authenticated user. Requires authentication.
+---
 
-### Get a single task
-GET `/api/tasks/:taskId`
+## API Endpoints
 
-Retrieve detailed information about a specific task. Requires authentication.
+### Check if API is Running
+```
+GET /status
+```
+**Purpose**: See if the API server is working  
+**Authentication**: Not required  
+**Returns**: Status information
 
-### Create a new task
-POST `/api/tasks`
+---
 
-Allows you to create a new task. Requires authentication.
+### Get All Your Tasks
+```
+GET /api/tasks
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Get a complete list of all your tasks  
+**Authentication**: Required  
+**Returns**: Array of all your tasks
 
-The request body needs to be in JSON format and include the following properties:
-- `title` - String - Required
-- `description` - String - Optional
-- `dueDate` - String (ISO 8601 format) - Optional
-- `completed` - Boolean - Optional (defaults to false)
-- `archived` - Boolean - Optional (defaults to false)
+**Example Response:**
+```json
+[
+  {
+    "id": 1,
+    "title": "Buy groceries",
+    "description": "Milk, bread, eggs",
+    "dueDate": "2025-08-08T17:00:00",
+    "completed": false,
+    "archived": false,
+    "createdAt": "2025-08-05T12:00:00",
+    "updatedAt": "2025-08-05T12:00:00"
+  }
+]
+```
 
-Example
+---
+
+### Get One Specific Task
+```
+GET /api/tasks/1
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Get details about one specific task (replace "1" with task ID)  
+**Authentication**: Required  
+**Returns**: Single task object
+
+---
+
+### Create a New Task
 ```
 POST /api/tasks
-Authorization: Bearer <YOUR TOKEN>
+Authorization: Bearer <YOUR_TOKEN>
+Content-Type: application/json
+
 {
-  "title": "Finish Spring Boot project",
-  "description": "API should be done by Friday",
+  "title": "Finish homework",
+  "description": "Math and English assignments",
   "dueDate": "2025-08-09T18:00:00",
   "completed": false,
   "archived": false
 }
 ```
+**Purpose**: Create a brand new task  
+**Authentication**: Required
 
-The response body will contain the created task with its assigned ID.
+**Request Fields:**
+- `title` (Required): What's the task called?
+- `description` (Optional): More details about the task
+- `dueDate` (Optional): When should it be done? Format: YYYY-MM-DDTHH:MM:SS
+- `completed` (Optional): Is it done? true or false (defaults to false)
+- `archived` (Optional): Is it archived? true or false (defaults to false)
 
-### Update a task
-PUT `/api/tasks/:taskId`
+**Returns**: The newly created task with its assigned ID
 
-Update an existing task. Requires authentication.
+---
 
-The request body needs to be in JSON format and allows you to update the following properties:
-- `title` - String
-- `description` - String
-- `dueDate` - String (ISO 8601 format)
-- `completed` - Boolean
-
-Note: Archived tasks cannot be updated.
-
-Example
+### Update an Existing Task
 ```
 PUT /api/tasks/1
-Authorization: Bearer <YOUR TOKEN>
+Authorization: Bearer <YOUR_TOKEN>
+Content-Type: application/json
+
 {
-  "title": "Updated Title",
-  "description": "Updated description",
+  "title": "Updated task name",
+  "description": "Updated details",
   "dueDate": "2025-08-10T12:00:00",
   "completed": true
 }
 ```
+**Purpose**: Change the details of an existing task  
+**Authentication**: Required  
+**Note**: You cannot update archived tasks
 
-### Delete a task
-DELETE `/api/tasks/:taskId`
+**Smart Feature**: If you mark a task as completed and it's already past its due date, it will automatically be archived!
 
-Delete an existing task permanently. Requires authentication.
+---
 
-The request body needs to be empty.
-
-Example
+### Delete a Task Forever
 ```
 DELETE /api/tasks/1
-Authorization: Bearer <YOUR TOKEN>
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Permanently remove a task (cannot be undone!)  
+**Authentication**: Required  
+**Returns**: Nothing (just confirms deletion)
+
+---
+
+### Mark Task as Done
+```
+PUT /api/tasks/1/complete
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Mark a task as completed ✓  
+**Authentication**: Required
+
+---
+
+### Mark Task as Not Done
+```
+PUT /api/tasks/1/uncomplete
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Mark a task as not completed (undo completion)  
+**Authentication**: Required
+
+---
+
+### Archive a Task
+```
+PUT /api/tasks/1/archive
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Move task to archive (hide it from main list without deleting)  
+**Authentication**: Required  
+**Think of it as**: Moving old tasks to storage
+
+---
+
+### Bring Task Back from Archive
+```
+PUT /api/tasks/1/unarchive
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Move task back to main list from archive  
+**Authentication**: Required
+
+---
+
+### Change When Task is Due
+```
+PUT /api/tasks/1/duedate?date=2025-08-15T14:30:00
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Change only the due date of a task  
+**Authentication**: Required  
+**Note**: Date must be in format YYYY-MM-DDTHH:MM:SS
+
+---
+
+### Auto-Clean Old Completed Tasks
+```
+POST /api/tasks/auto-archive
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Automatically archive all tasks that are:
+- ✅ Completed
+- 📅 Past their due date
+- 📂 Not already archived
+
+**Think of it as**: Spring cleaning for your task list!
+
+---
+
+### Get Today's Tasks
+```
+GET /api/tasks/today
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Get only tasks that are due today  
+**Authentication**: Required  
+**Perfect for**: "What do I need to do today?"
+
+---
+
+### Get Urgent Tasks (Due Soon)
+```
+GET /api/tasks/due-soon
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: Get tasks that are:
+- ❌ Not completed yet
+- 📂 Not archived
+- ⏰ Due within next 24 hours
+
+**Perfect for**: "What's urgent that I need to do?"
+
+---
+
+### Get All Completed Tasks
+```
+GET /api/tasks/completed
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: See all tasks you've finished  
+**Authentication**: Required  
+**Perfect for**: Seeing your accomplishments!
+
+---
+
+### Get All Archived Tasks
+```
+GET /api/tasks/archived
+Authorization: Bearer <YOUR_TOKEN>
+```
+**Purpose**: See all tasks you've moved to archive  
+**Authentication**: Required  
+**Perfect for**: Finding old tasks you stored away
+
+---
+
+## Authentication (How to Login)
+
+**You Need**: A valid JWT token (like a temporary password)
+
+**How to Use**: Add this header to every request (except /status):
+```
+Authorization: Bearer <YOUR_TOKEN>
 ```
 
-### Mark task as completed
-PUT `/api/tasks/:taskId/complete`
-
-Marks a task as completed. Requires authentication.
-
-### Mark task as not completed
-PUT `/api/tasks/:taskId/uncomplete`
-
-Marks a task as not completed. Requires authentication.
-
-### Archive a task
-PUT `/api/tasks/:taskId/archive`
-
-Archives a task. Requires authentication.
-
-### Unarchive a task
-PUT `/api/tasks/:taskId/unarchive`
-
-Unarchives a task. Requires authentication.
-
-### Change due date
-PUT `/api/tasks/:taskId/duedate`
-
-Changes the due date of a task. Requires authentication.
-
-Query parameters:
-- `date` - String (ISO 8601 format) - Required
-
-Example
+**Example**: If your token is "abc123", use:
 ```
-PUT /api/tasks/1/duedate?date=2025-08-10T17:00:00
-Authorization: Bearer <YOUR TOKEN>
+Authorization: Bearer abc123
 ```
 
-### Auto-archive overdue completed tasks
-POST `/api/tasks/auto-archive`
+---
 
-Automatically archives tasks that are completed, have a due date in the past, and are not already archived. Requires authentication.
+## Task Object - What Each Field Means
 
-### Get tasks due today
-GET `/api/tasks/today`
+Every task has these properties:
 
-Returns tasks due today (from 00:00 to 23:59). Requires authentication.
+| Field | What It Means | Example |
+|-------|---------------|---------|
+| `id` | Unique task number (automatically assigned) | 1, 2, 3... |
+| `title` | Name of the task | "Buy groceries" |
+| `description` | More details about the task | "Milk, bread, eggs" |
+| `dueDate` | When it should be done | "2025-08-08T17:00:00" |
+| `completed` | Is it finished? | true or false |
+| `archived` | Is it stored away? | true or false |
+| `createdAt` | When was it created? | "2025-08-05T12:00:00" |
+| `updatedAt` | When was it last changed? | "2025-08-07T10:30:00" |
 
-### Get tasks due soon
-GET `/api/tasks/due-soon`
+---
 
-Returns tasks that are not completed, not archived, and due in the next 24 hours. Requires authentication.
+## Date Format
 
-### Get completed tasks
-GET `/api/tasks/completed`
+All dates use this format: **YYYY-MM-DDTHH:MM:SS**
 
-Returns all tasks that are marked as completed. Requires authentication.
+**Examples:**
+- August 8, 2025 at 5:00 PM = `2025-08-08T17:00:00`
+- December 25, 2025 at 9:30 AM = `2025-12-25T09:30:00`
 
-### Get archived tasks
-GET `/api/tasks/archived`
+---
 
-Returns all archived tasks. Requires authentication.
+## Error Messages
 
-## API Authentication
+**401 Unauthorized**: Your token is invalid or missing  
+**404 Not Found**: Task doesn't exist or doesn't belong to you  
+**403 Forbidden**: You can't do that (like updating an archived task)
 
-All endpoints (except status) require JWT authentication.
+---
 
-**Header format:**
+## Complete Example - Creating and Managing a Task
+
+### 1. Create a new task:
 ```
-Authorization: Bearer <YOUR TOKEN>
-```
+POST /api/tasks
+Authorization: Bearer your_token_here
+Content-Type: application/json
 
-You need to be authenticated to access or modify any task. Each task is linked to the logged-in user.
-
-## Task Object
-
-A task contains the following fields:
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | Long | Unique identifier of the task |
-| `title` | String | Title of the task |
-| `description` | String | Details about the task |
-| `dueDate` | String | When the task is due (ISO 8601 format) |
-| `completed` | Boolean | If the task is completed |
-| `archived` | Boolean | If the task is archived |
-| `createdAt` | String | When the task was created (ISO 8601 format) |
-| `updatedAt` | String | When the task was last updated (ISO 8601 format) |
-
-Example task object:
-```json
 {
-  "id": 1,
-  "title": "Buy groceries",
-  "description": "Milk, Bread, Eggs",
-  "dueDate": "2025-08-08T17:00:00",
-  "completed": false,
-  "archived": false,
-  "createdAt": "2025-08-05T12:00:00",
-  "updatedAt": "2025-08-05T12:00:00"
+  "title": "Study for exam",
+  "description": "Math final exam preparation",
+  "dueDate": "2025-08-15T09:00:00",
+  "completed": false
 }
 ```
+
+### 2. Mark it as complete:
+```
+PUT /api/tasks/1/complete
+Authorization: Bearer your_token_here
+```
+
+### 3. Archive it:
+```
+PUT /api/tasks/1/archive
+Authorization: Bearer your_token_here
+```
+
+That's it! Your task is now completed and stored away in the archive.
