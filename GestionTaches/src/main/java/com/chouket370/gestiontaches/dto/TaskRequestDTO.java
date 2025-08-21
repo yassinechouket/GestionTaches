@@ -1,5 +1,6 @@
 package com.chouket370.gestiontaches.dto;
 
+import com.chouket370.gestiontaches.model.Priority;
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,4 +23,3 @@ public class TaskRequestDTO {
     private String assignedToUsername;
     private Priority priority;
 }
-

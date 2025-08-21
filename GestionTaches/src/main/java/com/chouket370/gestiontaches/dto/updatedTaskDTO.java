@@ -1,6 +1,6 @@
 package com.chouket370.gestiontaches.dto;
 
-
+import com.chouket370.gestiontaches.model.Priority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +21,3 @@ public class updatedTaskDTO {
     private Optional<String> assignedToUsername = Optional.empty();
     private Optional<Priority> priority= Optional.empty();
 }
-
-

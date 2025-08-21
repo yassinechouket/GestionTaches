@@ -1,5 +1,6 @@
 package com.chouket370.gestiontaches.dto;
 
+import com.chouket370.gestiontaches.model.Priority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,4 +25,3 @@ public class TaskResponseDTO {
     private Priority priority;
 
 }
-
