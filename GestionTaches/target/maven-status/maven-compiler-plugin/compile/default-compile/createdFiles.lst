@@ -1,6 +1,7 @@
 com/chouket370/gestiontaches/dto/UserDTO.class
 com/chouket370/gestiontaches/dto/TaskResponseDTO.class
 com/chouket370/gestiontaches/model/UserRole.class
+com/chouket370/gestiontaches/controller/StatusController.class
 com/chouket370/gestiontaches/config/ApplicationConfig.class
 com/chouket370/gestiontaches/Auth/AuthenticationService.class
 com/chouket370/gestiontaches/config/SecurityConfiguration.class
