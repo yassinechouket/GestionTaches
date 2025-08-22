@@ -53,4 +53,13 @@ public class UserController {
                 .build();
     }
 
+
+    @GetMapping("/basic")
+    public List<UserBasicDTO> getAllUsernamesAndEmails() {
+        return userService.getAllUsers().stream()
+                .map(user -> new UserBasicDTO(user.getUsername(), user.getEmail()))
+                .toList();
+    }
+
+
 }
