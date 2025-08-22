@@ -28,7 +28,11 @@ public class TaskService {
 
     public List<TaskResponseDTO> getUserTasks() {
         String username = currentUserService.getCurrentUsername();
-        List<Task> tasks = taskRepository.findRelevantTasksForUser(username);
+        System.out.println("DEBUG username = " + username);
+
+        List<Task> tasks = taskRepository.findAll();
+        System.out.println("DEBUG tasks in DB = " + tasks.size());
+
         return tasks.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
