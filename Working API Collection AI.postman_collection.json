@@ -11,16 +11,20 @@
 		{
 			"name": "Status Check",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/status",
+					"raw": "http://localhost:8080/api/status",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
 						"status"
 					]
 				}
@@ -52,6 +56,9 @@
 		{
 			"name": "Register",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -61,7 +68,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"email\": \"ahmed@gmail.com\",\n  \"password\": \"5555\",\n  \"username\": \"ahmed\",\n  \"role\": \"USER\"\n}"
+					"raw": "{\n  \"email\": \"admin@gmail.com\",\n  \"password\": \"admin\",\n  \"username\": \"admin\",\n  \"role\": \"USER\"\n}"
 				},
 				"url": {
 					"raw": "{{url}}/api/v1/auth/register",
@@ -81,6 +88,9 @@
 		{
 			"name": "Authenticate",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -90,7 +100,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"email\": \"test@gmail.com\",\n  \"password\": \"5555\"\n}"
+					"raw": "{\n  \"email\": \"admin@gmail.com\",\n  \"password\": \"admin\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/v1/auth/authenticate",
@@ -104,30 +114,6 @@
 						"v1",
 						"auth",
 						"authenticate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get All Users",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer {{token}}"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/user",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"user"
 					]
 				}
 			},
@@ -433,11 +419,11 @@
 	"variable": [
 		{
 			"key": "token",
-			"value": "\"eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWhtZWQiLCJpYXQiOjE3NTU4MTcwMzksImV4cCI6MTc1NTg2MDIzOX0.YWZNV-fNfpUuB08jd3O_95FcTIJZ4zbTq15ugWUops4\n"
+			"value": "\"env.TOKEN\n"
 		},
 		{
 			"key": "url",
-			"value": "http://localhost:8080",
+			"value": "env.URL",
 			"type": "string"
 		}
 	]
