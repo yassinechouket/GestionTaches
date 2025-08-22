@@ -21,6 +21,7 @@ com/chouket370/gestiontaches/Auth/RegisterRequest.class
 com/chouket370/gestiontaches/controller/UserController.class
 com/chouket370/gestiontaches/model/Priority.class
 com/chouket370/gestiontaches/service/CurrentUserService.class
+com/chouket370/gestiontaches/dto/UserBasicDTO.class
 com/chouket370/gestiontaches/Auth/RegisterRequest$RegisterRequestBuilder.class
 com/chouket370/gestiontaches/model/Task.class
 com/chouket370/gestiontaches/model/User.class

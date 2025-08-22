@@ -4,6 +4,7 @@ package com.chouket370.gestiontaches.controller;
 
 
 import com.chouket370.gestiontaches.dto.UserDTO;
+import com.chouket370.gestiontaches.dto.UserBasicDTO;
 import com.chouket370.gestiontaches.model.User;
 import com.chouket370.gestiontaches.service.UserService;
 import jakarta.validation.Valid;
