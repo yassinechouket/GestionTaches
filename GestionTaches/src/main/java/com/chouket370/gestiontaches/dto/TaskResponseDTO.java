@@ -13,15 +13,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class TaskResponseDTO {
-    private Long id;
+    private Long taskId;
+    private Long ownerId;
+    private Long assignedId;
     private String title;
     private String description;
-    private LocalDateTime dueDate;
-    private boolean completed;
-    private boolean archived;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String assignedToUsername;
     private Priority priority;
-
+    private LocalDateTime dueTime;
+    private LocalDateTime lastUpdate;
 }
