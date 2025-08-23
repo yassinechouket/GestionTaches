@@ -10,6 +10,7 @@ import com.chouket370.gestiontaches.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/user")
 @AllArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class UserController {
     private final UserService userService;
 
