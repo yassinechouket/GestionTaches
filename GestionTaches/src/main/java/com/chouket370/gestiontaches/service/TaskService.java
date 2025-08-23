@@ -50,12 +50,14 @@ public class TaskService {
                 .orElseThrow(() -> new EntityNotFoundException("Task not found or access denied"));
         return mapToResponseDTO(task);
     }
-    public void deleteTask(Long taskId) {
+    public boolean deleteTask(Long taskId) {
         String username = currentUserService.getCurrentUsername();
-        Task task = taskRepository.findByIdAndUserUsername(taskId, username)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+        Task task = taskRepository.findByIdAndUserUsername(taskId, username).orElse(null);
+        if (task == null) return false;
         taskRepository.delete(task);
+        return true;
     }
+
 
     public List<TaskResponseDTO> getCompletedTasks() {
         String username = currentUserService.getCurrentUsername();
