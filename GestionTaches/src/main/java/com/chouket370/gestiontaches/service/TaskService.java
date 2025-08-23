@@ -27,16 +27,20 @@ public class TaskService {
     private final UserRepository userRepository;
 
     public List<TaskResponseDTO> getUserTasks() {
-        String username = currentUserService.getCurrentUsername();
-        System.out.println("DEBUG username = " + username);
-
-        List<Task> tasks = taskRepository.findAll();
-        System.out.println("DEBUG tasks in DB = " + tasks.size());
+        User currentUser = currentUserService.getCurrentUser();
+        List<Task> tasks = taskRepository.findAll().stream()
+                .filter(t ->
+                        (t.getAssignedTo() != null && t.getAssignedTo().getId().equals(currentUser.getId())) ||
+                                (t.getUser().getId().equals(currentUser.getId())) ||
+                                (t.getAssignedTo() == null)
+                )
+                .toList();
 
         return tasks.stream()
                 .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
+
 
 
 
@@ -123,25 +127,25 @@ public class TaskService {
     }
 
     public TaskResponseDTO createTask(TaskRequestDTO taskDto) {
-        User user = currentUserService.getCurrentUser();
+        User owner = currentUserService.getCurrentUser();
 
         Task.TaskBuilder taskBuilder = Task.builder()
                 .title(taskDto.getTitle())
                 .description(taskDto.getDescription())
-                .completed(taskDto.isCompleted())
-                .dueDate(taskDto.getDueDate())
-                .archived(taskDto.isArchived())
                 .priority(taskDto.getPriority())
-                .user(user);
+                .dueDate(taskDto.getDueDate())
+                .user(owner);
 
-        if (taskDto.getAssignedToUsername() != null) {
-            User assignedUser = currentUserService.getUserByUsername(taskDto.getAssignedToUsername());
-            taskBuilder.assignedTo(assignedUser);
+        if (taskDto.getAssigneeId() != null) {
+            User assignee = userRepository.findById(taskDto.getAssigneeId())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with id " + taskDto.getAssigneeId()));
+            taskBuilder.assignedTo(assignee);
         }
 
         Task savedTask = taskRepository.save(taskBuilder.build());
         return mapToResponseDTO(savedTask);
     }
+
 
 
     public void archiveCompletedOverdueTasks() {
@@ -197,18 +201,17 @@ public class TaskService {
 
     private TaskResponseDTO mapToResponseDTO(Task task) {
         return TaskResponseDTO.builder()
-                .id(task.getId())
+                .taskId(task.getId())
+                .ownerId(task.getUser().getId())
+                .assignedId(task.getAssignedTo() != null ? task.getAssignedTo().getId() : null)
                 .title(task.getTitle())
                 .description(task.getDescription())
-                .dueDate(task.getDueDate())
-                .completed(task.isCompleted())
-                .archived(task.isArchived())
-                .createdAt(task.getCreatedAt())
-                .updatedAt(task.getUpdatedAt())
-                .assignedToUsername(task.getAssignedTo() != null ? task.getAssignedTo().getUsername() : null)
                 .priority(task.getPriority())
+                .dueTime(task.getDueDate())
+                .lastUpdate(task.getUpdatedAt())
                 .build();
     }
+
 
     public List<TaskResponseDTO> getTasksDueSoon() {
         String username = currentUserService.getCurrentUsername();
