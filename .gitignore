@@ -4,7 +4,7 @@ GestionTaches/target/maven-status/maven-compiler-plugin/testCompile/*
 target/test-classes/
 
 # Maven build directory
-target/
+GestionTaches/target/
 
 # IDE files
 .idea/
