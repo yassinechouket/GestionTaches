@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -51,10 +52,11 @@ public class TaskController {
         return ResponseEntity.ok(taskService.updateTask(id, dto));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Map<String, String>> deleteTask(@PathVariable Long id) {
+        boolean deleted = taskService.deleteTask(id);
+        return ResponseEntity.ok(Map.of("success", deleted ? "true" : "false"));
     }
+
     @PutMapping("/{id}/archive")
     public ResponseEntity<Void> archiveTask(@PathVariable Long id) {
         taskService.archiveTask(id);
