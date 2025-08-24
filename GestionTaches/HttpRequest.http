@@ -1,16 +1,19 @@
 ###
+
+### Register
 POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {
   "email": "bor3i@gmail.com",
   "password": "5555",
-  "username": "Bor3i",
-  "role": "USER"
+  "username": "Bor3i"
 }
 
 ###
 
+
+### Authenticate
 POST http://localhost:8080/api/v1/auth/authenticate
 Content-Type: application/json
 
@@ -19,42 +22,45 @@ Content-Type: application/json
   "password": "5555"
 }
 ###
+
+### Create Task
 POST http://localhost:8080/api/tasks
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiQm9yM2kiLCJpYXQiOjE3NTQ0OTAzMjYsImV4cCI6MTc1NDUzMzUyNn0.9tJeQ7GMWJuJoJPloSoBLHlovvawJg8WhL_-XU9FqSU
+Authorization: Bearer <token>
 Content-Type: application/json
 
 {
   "title": "Finish project",
   "description": "Complete the API by Friday",
-  "completed": false,
+  "isCompleted": false,
+  "priority": "LOW",
   "dueDate": "2025-08-08T17:00:00",
-  "archived": false
+  "assignedId": null
 }
 ###
-GET http://localhost:8080/api/tasks/today
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiQm9yM2kiLCJpYXQiOjE3NTQ0OTAzMjYsImV4cCI6MTc1NDUzMzUyNn0.9tJeQ7GMWJuJoJPloSoBLHlovvawJg8WhL_-XU9FqSU
-###
 
-GET http://localhost:8080/api/tasks/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiQm9yM2kiLCJpYXQiOjE3NTQ0OTAzMjYsImV4cCI6MTc1NDUzMzUyNn0.9tJeQ7GMWJuJoJPloSoBLHlovvawJg8WhL_-XU9FqSU
-
-###
+### Get All Tasks
 GET http://localhost:8080/api/tasks
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiQm9yM2kiLCJpYXQiOjE3NTQ0OTAzMjYsImV4cCI6MTc1NDUzMzUyNn0.9tJeQ7GMWJuJoJPloSoBLHlovvawJg8WhL_-XU9FqSU
+Authorization: Bearer <token>
 ###
-GET http://localhost:8080/api/tasks/due-soon
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiQm9yM2kiLCJpYXQiOjE3NTQ0OTAzMjYsImV4cCI6MTc1NDUzMzUyNn0.9tJeQ7GMWJuJoJPloSoBLHlovvawJg8WhL_-XU9FqSU
+
+
+### Get Task By ID
+GET http://localhost:8080/api/tasks/1
+Authorization: Bearer <token>
 
 ###
-POST http://localhost:8080/api/tasks
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiQm9yM2kiLCJpYXQiOjE3NTQ0OTAzMjYsImV4cCI6MTc1NDUzMzUyNn0.9tJeQ7GMWJuJoJPloSoBLHlovvawJg8WhL_-XU9FqSU
-Content-Type: application/json
 
-{
-  "title": "test",
-  "description": "Complete the API by Friday",
-  "completed": false,
-  "dueDate": "2025-08-06T17:00:00",
-  "archived": false
-}
+### Delete Task
+DELETE http://localhost:8080/api/tasks/1
+Authorization: Bearer <token>
+###
+
+### Status
+GET http://localhost:8080/api/status
+
+###
+
+### Get All Users
+GET http://localhost:8080/user
+Authorization: Bearer <token>
 ###

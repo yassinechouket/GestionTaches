@@ -1,0 +1,119 @@
+{
+	"info": {
+		"name": "GestionTaches Updated APIs",
+		"description": "Postman collection for the updated GestionTaches API.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{"key": "Content-Type", "value": "application/json"}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"user1\",\n  \"email\": \"user1@example.com\",\n  \"password\": \"pass123\"\n}"
+				},
+				"url": {"raw": "{{url}}/api/v1/auth/register", "host": ["{{url}}"], "path": ["api", "v1", "auth", "register"]}
+			}
+		},
+		{
+			"name": "Authenticate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{"key": "Content-Type", "value": "application/json"}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"user1@example.com\",\n  \"password\": \"pass123\"\n}"
+				},
+				"url": {"raw": "{{url}}/api/v1/auth/authenticate", "host": ["{{url}}"], "path": ["api", "v1", "auth", "authenticate"]}
+			}
+		},
+		{
+			"name": "Status Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {"raw": "{{url}}/api/status", "host": ["{{url}}"], "path": ["api", "status"]}
+			}
+		},
+		{
+			"name": "Get All Users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{"key": "Authorization", "value": "Bearer {{token}}"}
+				],
+				"url": {"raw": "{{url}}/user", "host": ["{{url}}"], "path": ["user"]}
+			}
+		},
+		{
+			"name": "Create Task",
+			"request": {
+				"method": "POST",
+				"header": [
+					{"key": "Authorization", "value": "Bearer {{token}}"},
+					{"key": "Content-Type", "value": "application/json"}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Finish project\",\n  \"description\": \"Complete the API by Friday\",\n  \"isCompleted\": false,\n  \"priority\": \"LOW\",\n  \"dueDate\": \"2025-08-23T17:00:00\",\n  \"assignedId\": null\n}"
+				},
+				"url": {"raw": "{{url}}/api/tasks", "host": ["{{url}}"], "path": ["api", "tasks"]}
+			}
+		},
+		{
+			"name": "Update Task",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{"key": "Authorization", "value": "Bearer {{token}}"},
+					{"key": "Content-Type", "value": "application/json"}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"description\": \"Updated description\",\n  \"isCompleted\": true,\n  \"priority\": \"HIGH\",\n  \"assignedId\": 2,\n  \"dueDate\": \"2025-08-24T17:00:00\"\n}"
+				},
+				"url": {"raw": "{{url}}/api/tasks/1", "host": ["{{url}}"], "path": ["api", "tasks", "1"]}
+			}
+		},
+		{
+			"name": "Delete Task",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{"key": "Authorization", "value": "Bearer {{token}}"}
+				],
+				"url": {"raw": "{{url}}/api/tasks/1", "host": ["{{url}}"], "path": ["api", "tasks", "1"]}
+			}
+		},
+		{
+			"name": "Get All Tasks",
+			"request": {
+				"method": "GET",
+				"header": [
+					{"key": "Authorization", "value": "Bearer {{token}}"}
+				],
+				"url": {"raw": "{{url}}/api/tasks", "host": ["{{url}}"], "path": ["api", "tasks"]}
+			}
+		},
+		{
+			"name": "Get Task By ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{"key": "Authorization", "value": "Bearer {{token}}"}
+				],
+				"url": {"raw": "{{url}}/api/tasks/1", "host": ["{{url}}"], "path": ["api", "tasks", "1"]}
+			}
+		}
+	],
+	"variable": [
+		{"key": "token", "value": "TOKEN"},
+		{"key": "url", "value": "http://localhost:8080"}
+	]
+}

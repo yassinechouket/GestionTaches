@@ -1,0 +1,21 @@
+#compiled class files depends on the OS and IDE
+GestionTaches/target/maven-status/maven-compiler-plugin/compile/*
+GestionTaches/target/maven-status/maven-compiler-plugin/testCompile/*
+target/test-classes/
+
+# Maven build directory
+GestionTaches/target/
+
+# IDE files
+.idea/
+*.iml
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env

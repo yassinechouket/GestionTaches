@@ -27,18 +27,17 @@ public class TaskService {
     private final UserRepository userRepository;
 
     public List<TaskResponseDTO> getUserTasks() {
-        User currentUser = currentUserService.getCurrentUser();
-        List<Task> tasks = taskRepository.findAll().stream()
-                .filter(t ->
-                        (t.getAssignedTo() != null && t.getAssignedTo().getId().equals(currentUser.getId())) ||
-                                (t.getUser().getId().equals(currentUser.getId())) ||
-                                (t.getAssignedTo() == null)
-                )
-                .toList();
-
-        return tasks.stream()
-                .map(this::mapToResponseDTO)
-                .collect(Collectors.toList());
+    User currentUser = currentUserService.getCurrentUser();
+    List<Task> tasks = taskRepository.findAll().stream()
+        .filter(t ->
+            (t.getAssignedTo() == null) ||
+            (t.getAssignedTo() != null && t.getAssignedTo().getId().equals(currentUser.getId())) ||
+            (t.getUser().getId().equals(currentUser.getId()))
+        )
+        .toList();
+    return tasks.stream()
+        .map(this::mapToResponseDTO)
+        .collect(Collectors.toList());
     }
 
 
